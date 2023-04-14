@@ -20,19 +20,19 @@ client = TestClient(app)
 
 
 def test_get_quadratic_equation():
-    response = client.get("/?a=1&b=-3&c=2")
+    response = client.get("/get_quadratic_equation?a=1&b=-3&c=2")
     assert response.status_code == 200
     assert response.json() == {"solution": [2.0, 1.0]}
 
-    response = client.get("/?a=1&b=2&c=1")
+    response = client.get("/get_quadratic_equation?a=1&b=2&c=1")
     assert response.status_code == 200
     assert response.json() == {"solution": -1.0}
 
-    response = client.get("/?a=1&b=2&c=3")
+    response = client.get("/get_quadratic_equation?a=1&b=2&c=3")
     assert response.status_code == 200
     assert response.json() == {"solution": None}
 
-    response = client.get("/?a=0&b=2&c=3")
+    response = client.get("/get_quadratic_equation?a=0&b=2&c=3")
     assert response.status_code == 422
     assert response.json() == {
         "detail": [
@@ -44,13 +44,13 @@ def test_get_quadratic_equation():
         ]
     }
 
-    response = client.get("/?a=1&b=2")
+    response = client.get("/get_quadratic_equation?a=1&b=2")
     assert response.status_code == 422
     assert response.json() == {
         "detail": [{"loc": ["query", "c"], "msg": "field required", "type": "value_error.missing"}]
     }
 
-    response = client.get("/?a=1&b=2&c=foo")
+    response = client.get("/get_quadratic_equation?a=1&b=2&c=foo")
     assert response.status_code == 422
     assert response.json() == {
         "detail": [
